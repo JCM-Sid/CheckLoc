@@ -69,14 +69,14 @@ secrets_singleton.merge_programmatic_secrets({"auth": auth_config})
 
 # --- COMPTES AUTORISÉS & POI ---
 USER_ORG = {
-    "jc": ("JC", "Perso"),
-    "nico": ("Nico", "ATAE"),
+    "jc": ("JC", "ddcm"),
+    "nico": ("Nico", "atae"),
     "default": ("DefaultUser", "DefaultOrg"),
 }
 
 POI_LIST = {
-    "Perso": ["Maison", "Bureau", "Bois", "Piece d'eau", "Chateau", "Nouveau"],
-    "ATAE": ["Maison", "Bureau", "Chantier1", "Chantier2", "Chantier3", "Repas", "Nouveau"],
+    "ddcm": ["Maison", "Bureau", "Bois", "Piece d'eau", "Chateau", "Rouen Coloc", "Noema", "Nouveau"],
+    "atae": ["Maison", "Bureau", "Chantier1", "Chantier2", "Chantier3", "Repas", "Nouveau"],
     "DefaultOrg": ["Lieu1", "Lieu2", "NouveauLieu"]
 }
 
