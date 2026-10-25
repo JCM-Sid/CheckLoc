@@ -67,7 +67,6 @@ def load_logs(csv_path: Path) -> pd.DataFrame:
         | logs["Longitude"].isna()
         | ~logs["Latitude"].between(-90, 90)
         | ~logs["Longitude"].between(-180, 180)
-        | logs["POI"].eq("")
         | logs["Utilisateur"].eq("")
         | ~logs["Action"].isin({CHECK_IN, CHECK_OUT})
     )
@@ -77,6 +76,18 @@ def load_logs(csv_path: Path) -> pd.DataFrame:
             "Données manquantes ou invalides aux lignes CSV : "
             + ", ".join(map(str, csv_lines))
         )
+
+    missing_poi = logs["POI"].eq("")
+    if missing_poi.any():
+        csv_lines = (logs.index[missing_poi] + 2).tolist()
+        warnings.warn(
+            "Pointages ignorés car le POI est vide aux lignes CSV : "
+            + ", ".join(map(str, csv_lines)),
+            stacklevel=2,
+        )
+        logs = logs.loc[~missing_poi]
+    if logs.empty:
+        raise ValueError("Aucun pointage exploitable : tous les POI sont vides.")
 
     if "Précision (m)" in logs.columns:
         logs["Précision (m)"] = pd.to_numeric(

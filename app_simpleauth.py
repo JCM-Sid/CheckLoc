@@ -190,7 +190,11 @@ st.divider()
 
 # Récupération des POI autorisés en fonction de l'organisation de l'utilisateur
 available_pois = POI_LIST.get(st.session_state.user_org, [])
-selected_poi = st.selectbox("📌 Sélectionner un Lieu pré-défini :", available_pois)
+if available_pois:
+    selected_poi = st.selectbox("📌 Sélectionner un Lieu pré-défini :", available_pois)
+else:
+    selected_poi = None
+    st.warning("Aucun lieu n'est configuré pour votre organisation.")
 
 st.divider()
 
@@ -206,20 +210,22 @@ with col1:
     if st.button(
         "🟢 Arrivée",
         type="primary",
-        disabled=is_checkin_disabled,
+        disabled=is_checkin_disabled or selected_poi is None,
         key="btn_checkin",
     ):
         st.session_state.action_type = "Check-in"
 
 with col2:
     if st.button(
-        "🔴 Départ", disabled=is_checkout_disabled, key="btn_checkout"
+        "🔴 Départ",
+        disabled=is_checkout_disabled or selected_poi is None,
+        key="btn_checkout",
     ):
         st.session_state.action_type = "Check-out"
 
 
 # --- TRAITEMENT DU POINTAGE ---
-if st.session_state.action_type:
+if st.session_state.action_type and selected_poi is not None:
     st.info(
         f"Demande de localisation en cours pour **{st.session_state.action_type}** à **{selected_poi}**..."
     )

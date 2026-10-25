@@ -13,6 +13,10 @@ dependencies = [
     "streamlit-js-eval",
 ]
 
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
 [project.scripts]
 checkloc = "checkloc_launcher:main"
 analyse-poi = "analyse_poi:main"

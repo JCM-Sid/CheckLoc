@@ -8,20 +8,21 @@ la précision de localisation et une empreinte de l'appareil.
 
 ## Prérequis et configuration
 
-- Python et un environnement virtuel dans `.env`.
+- Python et un environnement virtuel dans `.venv`.
 - Les dépendances et commandes du projet sont déclarées dans `pyproject.toml`.
 - Un fournisseur Authentik configuré pour l'authentification Streamlit.
 
-Depuis la racine du projet, installez les dépendances et les commandes du projet :
+Avec `uv`, installez les dépendances et les commandes du projet depuis la racine :
 
 ```bash
-source .env/bin/activate
-pip install .
+uv sync
 ```
 
 Cette installation rend disponibles les commandes `checkloc` (application
 Streamlit) et `analyse-poi` (analyse des pointages). `requirements.txt` conserve
-également la liste des dépendances pour les installations qui l'utilisent.
+également la liste des dépendances pour les installations qui l'utilisent. Pour
+une installation avec pip, activez votre environnement virtuel puis lancez
+`pip install .`. Avec `uv`, l'analyse se lance avec `uv run analyse-poi`.
 
 Avant le premier démarrage, configurez les secrets localement :
 - `.streamlit/secrets.toml` doit contenir la configuration d'authentification
@@ -42,12 +43,20 @@ Cette version n'est plus maintenue, elle est présente pour reference uniquement
 Depuis la racine du projet, initialisez le processus PM2 avec :
 
 ```bash
-pm2 start /home/jch_m/Proj/CheckLoc/.env/bin/streamlit --name "CheckLoc" --interpreter python3 -- run /home/jch_m/Proj/CheckLoc/app.py --server.port 8520 --server.address 0.0.0.0
+pm2 start /home/jch_m/Proj/CheckLoc/.venv/bin/streamlit \
+  --name "CheckLoc" \
+  --cwd /home/jch_m/Proj/CheckLoc \
+  --interpreter /home/jch_m/Proj/CheckLoc/.venv/bin/python \
+  -- run /home/jch_m/Proj/CheckLoc/app.py \
+  --server.port 8520 \
+  --server.address 0.0.0.0
 ```
 
-L'application écoute sur le port `8520`. Comme le fichier de pointage est
-utilisé avec un chemin relatif, lancez PM2 depuis la racine du projet afin que
-`log_location.csv` soit créé et mis à jour au bon endroit.
+L'interpréteur Python de l'environnement `.venv` doit être indiqué explicitement
+à PM2 ; `--interpreter python3` peut sélectionner un Python système qui ne
+contient pas les dépendances du projet. L'application écoute sur le port `8520`.
+Le répertoire de travail est fixé à la racine du projet afin que les chemins
+relatifs, notamment celui de `log_location.csv`, pointent au bon endroit.
 
 Commandes utiles pour gérer le processus :
 
@@ -94,3 +103,5 @@ Le CSV doit contenir les colonnes `Horodatage`, `Utilisateur`, `POI`, `Action`,
 `Latitude` et `Longitude`. `Action` doit être `Check-in` ou `Check-out`.
 `Précision (m)` est facultative ; en son absence, les précisions ne sont pas
 disponibles dans les résultats.
+Les lignes dont le POI est vide sont ignorées avec un avertissement ; les autres
+données manquantes ou invalides restent signalées comme une erreur.
