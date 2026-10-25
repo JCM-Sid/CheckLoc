@@ -9,20 +9,21 @@ la précision de localisation et une empreinte de l'appareil.
 ## Prérequis et configuration
 
 - Python et un environnement virtuel dans `.env`.
-- Les dépendances de `requirements.txt`.
+- Les dépendances et commandes du projet sont déclarées dans `pyproject.toml`.
 - Un fournisseur Authentik configuré pour l'authentification Streamlit.
 
-Depuis la racine du projet, installez les dépendances si nécessaire :
+Depuis la racine du projet, installez les dépendances et les commandes du projet :
 
 ```bash
 source .env/bin/activate
-pip install -r requirements.txt
+pip install .
 ```
 
-Avant le premier démarrage, configurez les secrets localement :
+Cette installation rend disponibles les commandes `checkloc` (application
+Streamlit) et `analyse-poi` (analyse des pointages). `requirements.txt` conserve
+également la liste des dépendances pour les installations qui l'utilisent.
 
-- `.env_secrets` doit définir `authentik_client_id` et
-  `authentik_client_secret`.
+Avant le premier démarrage, configurez les secrets localement :
 - `.streamlit/secrets.toml` doit contenir la configuration d'authentification
   Streamlit, notamment les sections `[auth]` et `[auth.authentik]` adaptées à
   votre fournisseur. 
@@ -64,7 +65,7 @@ statistiques par POI. Après avoir enregistré des pointages, lancez depuis la
 racine du projet :
 
 ```bash
-.env/bin/python analyse_poi.py
+analyse-poi
 ```
 
 Par défaut, le script lit `log_location.csv` et crée dans `analyse_result/` :
@@ -83,7 +84,7 @@ check-ins.
 Les chemins d'entrée et de sortie peuvent être remplacés :
 
 ```bash
-.env/bin/python analyse_poi.py \
+analyse-poi \
   --input chemin/vers/pointages.csv \
   --map-output analyse_result/carte_poi.html \
   --stats-output analyse_result/statistiques_poi.csv

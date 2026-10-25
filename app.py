@@ -6,19 +6,11 @@ import extra_streamlit_components as stx
 import pandas as pd
 import streamlit as st
 from streamlit_js_eval import get_geolocation, streamlit_js_eval
-import base64
 import hashlib
 
-import argparse
-import json
 import os
-import signal
-import urllib.parse
 import uuid
-import requests
-from typing import Dict, List, Optional
 
-from dotenv import load_dotenv
 from streamlit.runtime.secrets import secrets_singleton
 
 LOG_FILE = "log_location.csv"

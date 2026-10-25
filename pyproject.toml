@@ -1,0 +1,21 @@
+[project]
+name = "checkloc"
+version = "0.1.0"
+description = "Application Streamlit de pointage GPS et d'analyse des POI."
+requires-python = ">=3.10"
+dependencies = [
+    "extra-streamlit-components",
+    "flet",
+    "folium",
+    "pandas",
+    "python-dotenv",
+    "streamlit[auth]>=1.64.0",
+    "streamlit-js-eval",
+]
+
+[project.scripts]
+checkloc = "checkloc_launcher:main"
+analyse-poi = "analyse_poi:main"
+
+[tool.setuptools]
+py-modules = ["analyse_poi", "app", "checkloc_launcher"]
