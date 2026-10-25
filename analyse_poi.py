@@ -41,6 +41,9 @@ BASEMAP_ATTRIBUTION = (
     "Esri (Thailand), TomTom"
 )
 
+#TODO : Faire l'analyse par organisation. Ca implique de mettre le fichier log_location.csv avec l'organisation declarée. Et probalement exporter USER_ORG / POI_ORG dans un fichier config. A voir.
+#TODO : Ecrire le fichier *.html sur NExtcloud avec les fonctions d'ecriture nextcloud.
+
 
 def load_logs(csv_path: Path) -> pd.DataFrame:
     if not csv_path.is_file():
