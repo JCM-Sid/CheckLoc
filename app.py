@@ -24,18 +24,18 @@ from streamlit.runtime.secrets import secrets_singleton
 LOG_FILE = "log_location.csv"
 
 # --- CONFIGURATION OIDC AUTHENTIK ---
-load_dotenv(
-    dotenv_path=os.path.join(os.path.dirname(__file__), ".env_secrets"),
-    override=True,
-)
+#load_dotenv(
+#    dotenv_path=os.path.join(os.path.dirname(__file__), ".env_secrets"),
+#    override=True,
+#)
 
-authentik_client_id = os.environ.get("authentik_client_id")
-authentik_client_secret = os.environ.get("authentik_client_secret")
-if not authentik_client_id or not authentik_client_secret:
-    raise RuntimeError(
-        "Les variables authentik_client_id et authentik_client_secret "
-        "doivent être définies dans .env_secrets."
-    )
+#authentik_client_id = os.environ.get("authentik_client_id")
+#authentik_client_secret = os.environ.get("authentik_client_secret")
+#if not authentik_client_id or not authentik_client_secret:
+#    raise RuntimeError(
+#        "Les variables authentik_client_id et authentik_client_secret "
+#        "doivent être définies dans .env_secrets."
+#    )
 
 if not secrets_singleton.load_if_toml_exists():
     raise RuntimeError(
@@ -56,12 +56,13 @@ client_kwargs = authentik_config.get("client_kwargs", {})
 if not isinstance(client_kwargs, dict):
     raise RuntimeError("[auth.authentik.client_kwargs] doit être une table TOML.")
 
-authentik_config.update(
-    {
-        "client_id": authentik_client_id,
-        "client_secret": authentik_client_secret,
-    }
-)
+#authentik_config.update(
+#    {
+#        "client_id": authentik_client_id,
+#        "client_secret": authentik_client_secret,
+#    }
+#)
+
 auth_config["authentik"] = authentik_config
 secrets_singleton.merge_programmatic_secrets({"auth": auth_config})
 
